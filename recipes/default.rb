@@ -12,7 +12,7 @@ unless File.exist?(File.join(node[:magento][:dir], '.installed'))
   else
     include_recipe 'apt'
   end
-
+  include_recipe 'php'
   enc_key = nil # magento encryption key
   webserver = node[:magento][:webserver]
   user = node[:magento][:user]

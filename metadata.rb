@@ -5,7 +5,7 @@ maintainer_email 'craftsman@yevgenko.me'
 license 'Apache 2.0'
 description 'Magento app stack'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.8.6'
+version '0.8.7'
 recipe 'magento', 'Prepares app stack for magento deployments'
 
 %w(debian ubuntu centos redhat fedora amazon).each do |os|
@@ -17,5 +17,6 @@ end
   depends cb
 end
 
+depends 'php', '~> 1.5.0'
 depends 'php-fpm', '>= 0.6.4'
 depends 'nginx', '~> 2.6'
