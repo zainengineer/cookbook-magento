@@ -39,7 +39,7 @@ unless File.exist?(File.join(node[:magento][:dir], '.installed'))
   # Install required packages
   node[:magento][:packages].each do |pkg|
     package pkg do
-      action :upgrade
+      action :install
     end
   end
 
