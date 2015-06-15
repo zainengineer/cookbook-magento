@@ -71,3 +71,5 @@ default[:magento][:db][:acl] = 'localhost'
 
 default[:magento][:nginx][:default_listen] = '127.0.0.1:9000'
 default[:mysql][:db][:root_password] = 'password'
+default[:magento][:fresh_install] = true
+default[:magento][:install_flag] = '/root/.magento.app.installed'

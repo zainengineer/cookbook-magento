@@ -1,8 +1,8 @@
 # coding: utf-8
 
-installed_file = '/root/.magento.db.installed'
+db_installed_file = '/root/.magento.db.installed'
 
-unless File.exist?(installed_file)
+unless File.exist?(db_installed_file)
 
   include_recipe 'mysql::server'
   include_recipe 'mysql::client'
@@ -82,5 +82,13 @@ unless File.exist?(installed_file)
         rm -rf #{name}
       EOH
     end
+  end
+
+  file db_installed_file do
+    owner 'root'
+    group 'root'
+    mode '0655'
+    content Time.new.to_s
+    action :create_if_missing
   end
 end

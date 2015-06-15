@@ -1,8 +1,4 @@
 # coding: utf-8
-unless File.exist?(File.join(node[:magento][:dir], '.installed'))
-
-  require 'time'
-  inst_date = Time.new.rfc2822
 
   # BOF: Initialization block
   case node['platform_family']
@@ -72,6 +68,13 @@ unless File.exist?(File.join(node[:magento][:dir], '.installed'))
     notifies :restart, resources(service: 'php-fpm')
   end
 
+
+#####################################################
+#           Fresh Magento Install                   #
+#####################################################
+
+if node[:magento][:fresh_install] && ! (File.exist? node[:magento][:install_flag])
+
   directory node[:magento][:dir] do
     owner user
     group group
@@ -97,21 +100,6 @@ unless File.exist?(File.join(node[:magento][:dir], '.installed'))
     end
   end
 
-  # Setup Database
-  # if Chef::Config[:solo]
-  db_config = node[:magento][:db]
-
-  # else
-    # FIXME: data bags search throwing 404 error: Net::HTTPServerException
-    # db_config = search(:db_config, "id:master").first ||
-    #                                                    {:host => 'localhost'}
-    # db_user = search(:db_users, "id:magento").first || node[:magento][:db]
-    # enc_key = search(:magento, "id:enckey").first
-  # end
-
-  if db_config[:host] == 'localhost'
-    include_recipe "magento::_db_#{node[:magento][:database]}"
-  end
 
   # Generate local.xml file
   if enc_key
@@ -137,11 +125,29 @@ unless File.exist?(File.join(node[:magento][:dir], '.installed'))
     EOH
   end
 
-  bash 'Touch .installed flag' do
-    cwd node[:magento][:dir]
-    code <<-EOH
-    echo '#{inst_date}' > #{node[:magento][:dir]}/.installed
-    EOH
-  end
+##end of fresh install
+end
 
+# Setup Database
+# if Chef::Config[:solo]
+db_config = node[:magento][:db]
+
+# else
+  # FIXME: data bags search throwing 404 error: Net::HTTPServerException
+  # db_config = search(:db_config, "id:master").first ||
+  #                                                    {:host => 'localhost'}
+  # db_user = search(:db_users, "id:magento").first || node[:magento][:db]
+  # enc_key = search(:magento, "id:enckey").first
+# end
+
+if db_config[:host] == 'localhost'
+  include_recipe "magento::_db_#{node[:magento][:database]}"
+end
+
+file node[:magento][:install_flag] do
+    owner 'root'
+    group 'root'
+    mode '0655'
+    content Time.new.to_s
+    action :create_if_missing
 end
