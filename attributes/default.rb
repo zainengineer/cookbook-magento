@@ -34,21 +34,25 @@ default[:magento][:https_port] = 443
 default[:magento][:nginx][:send_timeout] = 60
 default[:magento][:nginx][:proxy_read_timeout] = 60
 
-default['php-fpm']['pools'] = [
-  {
-    name: 'magento',
-    listen: '127.0.0.1:9001',
-    allowed_clients: ['127.0.0.1'],
-    user: node[:magento][:user],
-    group: node[node[:magento][:webserver]][:group],
-    process_manager: 'dynamic',
-    max_children: 50,
-    start_servers: 5,
-    min_spare_servers: 5,
-    max_spare_servers: 35,
-    max_requests: 500
-  }
-]
+set['php-fpm']['pools'] = {
+    "default" => {
+        :enable => true
+    },
+    "magento" => {
+        :enable => "true",
+        name: 'magento',
+        listen: '127.0.0.1:9001',
+        allowed_clients: ['127.0.0.1'],
+        user: node[:magento][:user],
+        group: node[node[:magento][:webserver]][:group],
+        process_manager: 'dynamic',
+        max_children: 50,
+        start_servers: 5,
+        min_spare_servers: 5,
+        max_spare_servers: 35,
+        max_requests: 500
+    }
+}
 
 # Web Server SSL Settings
 default[:magento][:cert_name] = "#{node[:magento][:domain]}.pem"
@@ -63,4 +67,7 @@ default[:magento][:db][:database] = 'magento'
 default[:magento][:db][:username] = 'magentouser'
 set_unless[:magento][:db][:password] = secure_password
 default[:magento][:db][:acl] = 'localhost'
+
+
 default[:magento][:nginx][:default_listen] = '127.0.0.1:9000'
+default[:mysql][:db][:root_password] = 'password'
