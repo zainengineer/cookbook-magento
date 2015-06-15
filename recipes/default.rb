@@ -20,7 +20,7 @@ unless File.exist?(File.join(node[:magento][:dir], '.installed'))
   php_conf =  if platform?('centos', 'redhat')
                 ['/etc', '/etc/php.d']
               else
-                ['/etc/php5/fpm', '/etc/php5/conf.d']
+                ['/etc/php5/fpm', '/etc/php5/cli/conf.d']
               end
 
   user "#{user}" do
