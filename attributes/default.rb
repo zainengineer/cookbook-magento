@@ -63,3 +63,4 @@ default[:magento][:db][:database] = 'magento'
 default[:magento][:db][:username] = 'magentouser'
 set_unless[:magento][:db][:password] = secure_password
 default[:magento][:db][:acl] = 'localhost'
+default[:magento][:nginx][:default_listen] = '127.0.0.1:9000'
