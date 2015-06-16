@@ -69,6 +69,10 @@
   end
 
 
+web_recipe = "magento::_web_#{node[:magento][:webserver]}"
+Chef::Log.info "adding web recipe: " + web_recipe
+include_recipe web_recipe
+
 #####################################################
 #           Fresh Magento Install                   #
 #####################################################
@@ -82,8 +86,6 @@ if node[:magento][:fresh_install] && ! (File.exist? node[:magento][:install_flag
     action :create
     recursive true
   end
-
-  include_recipe "magento::_web_#{node[:magento][:webserver]}"
 
   # Fetch magento release
   unless node[:magento][:url].empty?
@@ -141,7 +143,9 @@ db_config = node[:magento][:db]
 # end
 
 if db_config[:host] == 'localhost'
-  include_recipe "magento::_db_#{node[:magento][:database]}"
+   db_recipe = "magento::_db_#{node[:magento][:database]}"
+   Chef::Log.info "adding database recipe: "  + db_recipe
+   include_recipe db_recipe
 end
 
 file node[:magento][:install_flag] do

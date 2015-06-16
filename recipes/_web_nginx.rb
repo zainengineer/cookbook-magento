@@ -1,9 +1,4 @@
 # coding: utf-8
-
-if File.exist? node[:magento][:install_flag]
-    return
-end
-
 include_recipe 'nginx'
 
 Magento.create_ssl_cert(File.join(node[:nginx][:dir], 'ssl'),
