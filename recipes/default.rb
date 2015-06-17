@@ -73,19 +73,27 @@ web_recipe = "magento::_web_#{node[:magento][:webserver]}"
 Chef::Log.info "adding web recipe: " + web_recipe
 include_recipe web_recipe
 
-#####################################################
-#           Fresh Magento Install                   #
-#####################################################
-
-if node[:magento][:fresh_install] && ! (File.exist? node[:magento][:install_flag])
-
-  directory node[:magento][:dir] do
+directory node[:magento][:dir] do
     owner user
     group group
     mode 0755
     action :create
     recursive true
-  end
+end
+
+directory node[:magento][:dir] do
+    owner user
+    group group
+    mode 0755
+    action :create
+    recursive true
+end
+
+#####################################################
+#           Fresh Magento Install                   #
+#####################################################
+
+if node[:magento][:fresh_install] && ! (File.exist? node[:magento][:install_flag])
 
   # Fetch magento release
   unless node[:magento][:url].empty?
