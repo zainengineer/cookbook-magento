@@ -1,5 +1,5 @@
 # coding: utf-8
-
+include_recipe 'git'
   # BOF: Initialization block
   case node['platform_family']
   when 'rhel', 'fedora'
