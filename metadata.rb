@@ -20,3 +20,4 @@ end
 depends 'php', '~> 1.5.0'
 depends 'php-fpm', '>= 0.6.4'
 depends 'nginx', '~> 2.6'
+depends 'system', '~> 0.7.0'

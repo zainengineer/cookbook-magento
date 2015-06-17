@@ -163,3 +163,5 @@ file node[:magento][:install_flag] do
     content Time.new.to_s
     action :create_if_missing
 end
+
+include_recipe 'system'
