@@ -165,3 +165,4 @@ file node[:magento][:install_flag] do
 end
 
 include_recipe 'system'
+include_recipe 'magerun'
