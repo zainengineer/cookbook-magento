@@ -56,6 +56,10 @@ server {
     fastcgi_param MAGE_RUN_CODE $magesite;
     fastcgi_param SCRIPT_FILENAME $document_root/index.php;
     fastcgi_param SCRIPT_NAME /index.php;
+    # Custom parameters
+    <% node[:magento][:server_params].each do |param_name, param_value| %>
+        <%= "fastcgi_param #{param_name} #{param_value};\n" %>
+    <% end %>
     <% if @ssl %>fastcgi_param HTTPS on;<% end %>
     # rewrite - if file not found, pass it to the backend
     if (!-f $request_filename) {
