@@ -74,3 +74,9 @@ default[:mysql][:db][:root_password] = 'password'
 default[:magento][:fresh_install] = false
 default[:magento][:install_flag] = '/root/.magento.app.installed'
 default[:system][:timezone] = 'Australia/Adelaide'
+
+default[:php][:ext_conf_dir] = '/etc/php5/fpm/conf.d'
+
+default[:xdebug][:config_file] = '/etc/php5/fpm/conf.d/20-xdebug.ini'
+default[:xdebug][:web_server][:service_name] = 'nginx'
+default[:xdebug][:directives] = { "remote_autostart" => 1, "remote_connect_back" => 1, "remote_enable" => 1, "remote_log" => '/tmp/remote.log' }
