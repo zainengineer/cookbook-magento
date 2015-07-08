@@ -76,6 +76,7 @@ default[:magento][:install_flag] = '/root/.magento.app.installed'
 default[:system][:timezone] = 'Australia/Adelaide'
 
 default[:php][:ext_conf_dir] = '/etc/php5/fpm/conf.d'
+default[:php][:version] = '5.4'
 
 default[:xdebug][:config_file] = '/etc/php5/fpm/conf.d/20-xdebug.ini'
 default[:xdebug][:web_server][:service_name] = 'nginx'
