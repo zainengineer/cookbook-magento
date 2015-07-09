@@ -4,6 +4,9 @@ db_installed_file = '/root/.magento.db.installed'
 
 unless File.exist?(db_installed_file)
 
+  package "mysql" do
+      :purge
+  end
   include_recipe 'mysql::server'
   include_recipe 'mysql::client'
   include_recipe 'mysql-chef_gem'
