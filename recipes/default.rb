@@ -14,6 +14,42 @@ include_recipe 'git'
     # online suggests  https://coderwall.com/p/bbfjrw/calculate-checksum-for-chef-s-remote_file-resource suggests shasum php-5.3.29.tar.gz -a 256 | cut -c-12
     # shasum php-5.3.29.tar.gz -a 256
     node.set[:php][:checksum] = '57cf097de3d6c3152dda342f62b1b2e9c988f4cfe300ccfe3c11f3c207a0e317'
+    package "bison" do
+        :remove
+    end
+
+#     bisonLibLocalPath  = "/tmp/libbison#{version}_#{arch}.deb"
+    bisonLibLocalPath  = "/tmp/libbison-dev_2.5.dfsg-2.1_amd64.deb"
+#     bisonLibRemoteUrl = "http://launchpadlibrarian.net/140087283/libbison-dev_#{version}.dfsg-1_#{arch}.deb";
+    bisonLibRemoteUrl = "http://launchpadlibrarian.net/96013406/libbison-dev_2.5.dfsg-2.1_amd64.deb";
+
+    remote_file bisonLibLocalPath do
+      source bisonLibRemoteUrl
+      mode 0644
+#       checksum "" # PUT THE SHA256 CHECKSUM HERE
+    end
+
+    dpkg_package "libbison" do
+      source bisonLibLocalPath
+      action :install
+    end
+    
+#     bisonLocalPath  = "/tmp/libbison#{version}_#{arch}.deb"
+    bisonLocalPath  = "/tmp/bison_2.5.dfsg-2.1_amd64.deb"
+#     bisonRemoteUrl = "http://launchpadlibrarian.net/140087283/libbison-dev_#{version}.dfsg-1_#{arch}.deb";
+    bisonRemoteUrl = "http://launchpadlibrarian.net/96013405/bison_2.5.dfsg-2.1_amd64.deb";
+
+    remote_file bisonLocalPath do
+      source bisonRemoteUrl
+      mode 0644
+#       checksum "" # PUT THE SHA256 CHECKSUM HERE
+    end
+
+    dpkg_package "libbison" do
+      source bisonLocalPath
+      action :install
+    end
+
   end
   include_recipe 'php'
   enc_key = nil # magento encryption key
