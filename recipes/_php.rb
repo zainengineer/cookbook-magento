@@ -8,7 +8,7 @@ if node[:php][:version].to_s == '5.3'
     node.set[:xdebug][:version] = '2.2.7'
     node.set[:php][:version] = '5.3.29'
     node.set[:php][:install_method] = 'source'
-    # online suggests  https://coderwall.com/p/bbfjrw/calculate-checksum-for-chef-s-remote_file-resource suggests shasum php-5.3.29.tar.gz -a 256 | cut -c-12
+    # online suggests  https://coderwall.com/p/bbfjrw/calculate-checksum-for-chef-s-remote_file-resource suggests shaphp-5.3.29.tar.gz| cut -c-12
     # shasum php-5.3.29.tar.gz -a 256
     node.set[:php][:checksum] = '57cf097de3d6c3152dda342f62b1b2e9c988f4cfe300ccfe3c11f3c207a0e317'
 

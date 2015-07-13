@@ -1,5 +1,8 @@
 # coding: utf-8
   # BOF: Initialization block
+  #git is needed for some installations like n98 etc
+  include_recipe '::_git'
+
   case node['platform_family']
   when 'rhel', 'fedora'
     include_recipe 'yum'
@@ -32,7 +35,6 @@ web_recipe = "magento::_web_#{node[:magento][:webserver]}"
 # Chef::Log.info "adding web recipe: " + web_recipe
 include_recipe web_recipe
   include_recipe '::_php'
-  include_recipe '::_git'
 
 #####################################################
 #           Fresh Magento Install                   #
