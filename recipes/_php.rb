@@ -9,10 +9,16 @@ if node[:php][:version].to_s == '5.3'
     node.set[:php][:version] = '5.3.29'
     node.set[:php][:install_method] = 'source'
     # online suggests  https://coderwall.com/p/bbfjrw/calculate-checksum-for-chef-s-remote_file-resource suggests shaphp-5.3.29.tar.gz| cut -c-12
-    # shasum php-5.3.29.tar.gz -a 256
+    # shasum  -a 256 php-5.3.29.tar.gz
     node.set[:php][:checksum] = '57cf097de3d6c3152dda342f62b1b2e9c988f4cfe300ccfe3c11f3c207a0e317'
 
+     #node.set[:magento][:packages] = %w(php-cli php-common php-curl php-gd  php-mcrypt php-pear php-apc php-xml)
     node.set[:magento][:packages] = %w()
+    node.set[:magento][:url_package] = node[:magento][:url_package_5_3]
+    include_recipe '::_url_package'
+#     php_pear "PDO" doXML_RPCXML_RPC
+#       action :install
+#     end
 #     package "bison" do
 #         :remove
 #     end

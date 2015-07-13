@@ -81,3 +81,12 @@ default[:php][:version] = '5.4'
 default[:xdebug][:config_file] = '/etc/php5/fpm/conf.d/20-xdebug.ini'
 default[:xdebug][:web_server][:service_name] = 'nginx'
 default[:xdebug][:directives] = { "remote_autostart" => 1, "remote_connect_back" => 1, "remote_enable" => 1, "remote_log" => '/tmp/remote.log' }
+default[:magento][:url_package] = []
+default[:magento][:url_package_5_3] = [
+   {:name => :php_common,:checksum => '6b78b92fbd734e70743913c684ab1859850fdb8ac5eaf17b167e37444c883202',
+           :url => 'ftp://rpmfind.net/linux/centos/6.6/updates/x86_64/Packages/php-common-5.3.3-46.el6_6.x86_64.rpm'  },
+        {:name => :php_mysql,:checksum => '1d9bd17a0e0198a292f2b15503544640a6e10801bd4183328b51d0e97d9e37d0',
+        :url => 'ftp://rpmfind.net/linux/mageia/distrib/2/x86_64/media/core/updates/php-mysql-5.3.27-1.2.mga2.x86_64.rpm'  },
+        {:name => :php_curl,:checksum => 'f7fecd9cb7d8423e7db2f3117c2c4c053dd6f4db113376732285445c956f9b95',
+                :url => 'ftp://rpmfind.net/linux/mageia/distrib/2/i586/media/core/updates/php-curl-5.3.27-1.2.mga2.i586.rpm'  }
+]
