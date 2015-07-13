@@ -5,6 +5,7 @@ when 'rhel', 'fedora'
         node.set[:git][:version] = '1.7.9'
         node.set[:git][:url] = 'http://git-core.googlecode.com/files/git-1.7.9.tar.gz'
         node.set[:git][:checksum] = 'http://git-core.googlecode.com/files/git-1.7.9.tar.gz'
+        Chef::Log.info "installing git 1.7.9 from source "
     end
 else
 #     include_recipe 'git'

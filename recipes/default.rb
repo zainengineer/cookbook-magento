@@ -22,11 +22,11 @@
   # Centos Polyfills
   package 'libmcrypt' if platform?('centos', 'redhat')
 
-if db_config[:host] == 'localhost'
+
    db_recipe = "magento::_db_#{node[:magento][:database]}"
    Chef::Log.info "adding database recipe: "  + db_recipe
    include_recipe db_recipe
-end
+
 
 web_recipe = "magento::_web_#{node[:magento][:webserver]}"
 # Chef::Log.info "adding web recipe: " + web_recipe

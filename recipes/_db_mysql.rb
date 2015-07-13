@@ -4,12 +4,9 @@ db_installed_file = '/root/.magento.db.installed'
 
 unless File.exist?(db_installed_file)
 
-  package "mysql" do
-      :purge
-  end
   include_recipe 'mysql::server'
   include_recipe 'mysql::client'
-  include_recipe 'mysql-chef_gem'
+  #include_recipe 'mysql-chef_gem'
 
   root_password = node[:mysql][:server_root_password]
   db_config = node[:magento][:db]
@@ -31,20 +28,6 @@ unless File.exist?(db_installed_file)
     variables(database: node[:magento][:db])
     notifies :run, resources(execute: 'mysql-install-mage-privileges'),
              :immediately
-  end
-
-  execute "create #{node[:magento][:db][:database]} database" do
-    command <<-EOH
-    /usr/bin/mysqladmin -u root -p#{root_password} \
-    create #{node[:magento][:db][:database]}
-    EOH
-    not_if do
-      require 'rubygems'
-      Gem.clear_paths
-      require 'mysql'
-      m = Mysql.new('localhost', 'root', root_password)
-      m.list_dbs.include?(node[:magento][:db][:database])
-    end
   end
 
   # Save node data after writing the MYSQL root password, so that a failed
