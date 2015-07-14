@@ -5,7 +5,11 @@ node[:magento][:url_package].each do |packageInfo|
     packageName = packageInfo[:name].to_s
     checkSum = packageInfo[:checksum].to_s
     fileName = File.basename(packageUrl)
-    localPath = '/tmp/url_package' + fileName
+    localPath = '/tmp/url_package_' + fileName
+    package packageName do
+       action :remove
+       ignore_failure true
+    end
     remote_file localPath do
         source packageUrl
         mode 0644

@@ -1,4 +1,5 @@
 # coding: utf-8
+#include_recipe '::_fix_epl'
 include_recipe 'nginx'
 
 Magento.create_ssl_cert(File.join(node[:nginx][:dir], 'ssl'),

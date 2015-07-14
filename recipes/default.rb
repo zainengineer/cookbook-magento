@@ -1,15 +1,17 @@
 # coding: utf-8
+# coding: utf-8
   # BOF: Initialization block
   #git is needed for some installations like n98 etc
+  include_recipe '::_fix_epl'
   include_recipe '::_git'
-
-  case node['platform_family']
-  when 'rhel', 'fedora'
-    include_recipe 'yum'
-    include_recipe 'yum-epel'
-  else
-    include_recipe 'apt'
-  end
+#   case node['platform_family']
+#   when 'rhel', 'fedora'
+#     include_recipe 'yum'
+#     include_recipe 'yum-epel'
+#   else
+#     include_recipe 'apt'
+#   end
+#   include_recipe '::_fix_epl'
   enc_key = nil # magento encryption key
   webserver = node[:magento][:webserver]
   user = node[:magento][:user]
@@ -120,5 +122,5 @@ db_config = node[:magento][:db]
 #     content Time.new.to_s
 #     action :create_if_missing
 # end
-
+#include_recipe '::_fix_epl'
 include_recipe 'system'

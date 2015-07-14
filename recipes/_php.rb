@@ -15,7 +15,6 @@ if node[:php][:version].to_s == '5.3'
      #node.set[:magento][:packages] = %w(php-cli php-common php-curl php-gd  php-mcrypt php-pear php-apc php-xml)
     node.set[:magento][:packages] = %w()
     node.set[:magento][:url_package] = node[:magento][:url_package_5_3]
-    include_recipe '::_url_package'
 #     php_pear "PDO" doXML_RPCXML_RPC
 #       action :install
 #     end
@@ -57,9 +56,10 @@ if node[:php][:version].to_s == '5.3'
 
 end
 include_recipe 'php'
+include_recipe '::_url_package'
 
   # Install php-fpm package
-   include_recipe 'php-fpm'
+   include_recipe '::_php_fpm'
 
    # Ubuntu Polyfills
      if platform?('ubuntu', 'debian')
@@ -87,16 +87,10 @@ include_recipe 'php'
        sed -i 's/;realpath_cache_size = .*/realpath_cache_size = 32K/' php.ini
        sed -i 's/;realpath_cache_ttl = .*/realpath_cache_ttl = 7200/' php.ini
        EOH
-       notifies :restart, resources(service: 'php-fpm')
+       #notifies :restart, resources(service: 'php-fpm')
      end
 
 include_recipe 'magerun'
 include_recipe 'composer'
-include_recipe 'xdebug'
-
-# Install required packages
-  node[:magento][:packages].each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
+#include_recipe 'xdebug'
+include_recipe '::_magento_packages'

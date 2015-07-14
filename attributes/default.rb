@@ -19,12 +19,14 @@ default[:magento][:user] = 'magento'
 # Required packages
 case node['platform_family']
 when 'rhel', 'fedora'
-  default[:magento][:packages] = %w(php-cli php-common php-curl php-gd
-                                    php-mcrypt php-mysql php-pear php-apc
-                                    php-xml)
+  if node['platform_version'].to_f < 5.2
+    default[:magento][:packages] = %w(php-cli php-common php-curl php-gd php-mcrypt php-mysql php-pear php-xml)
+    default['php']['packages'] = []
+  else
+    default[:magento][:packages] = %w(php-cli php-common php-curl php-gd php-mcrypt php-mysql php-pear php-apc php-xml)
+  end
 else
-  default[:magento][:packages] = %w(php5-cli php5-common php5-curl php5-gd
-                                    php5-mcrypt php5-mysql php-pear php-apc)
+  default[:magento][:packages] = %w(php5-cli php5-common php5-curl php5-gd php5-mcrypt php5-mysql php-pear php-apc)
 end
 
 # Web Server
@@ -82,11 +84,8 @@ default[:xdebug][:config_file] = '/etc/php5/fpm/conf.d/20-xdebug.ini'
 default[:xdebug][:web_server][:service_name] = 'nginx'
 default[:xdebug][:directives] = { "remote_autostart" => 1, "remote_connect_back" => 1, "remote_enable" => 1, "remote_log" => '/tmp/remote.log' }
 default[:magento][:url_package] = []
+# curl ftp://rpmfind.net/linux/Mandriva/official/updates/2008.1/x86_64/media/main/updates/glibc-2.7-12.2mnb1.x86_64.rpm | shasum -a 256
 default[:magento][:url_package_5_3] = [
-   {:name => :php_common,:checksum => '6b78b92fbd734e70743913c684ab1859850fdb8ac5eaf17b167e37444c883202',
-           :url => 'ftp://rpmfind.net/linux/centos/6.6/updates/x86_64/Packages/php-common-5.3.3-46.el6_6.x86_64.rpm'  },
-        {:name => :php_mysql,:checksum => '1d9bd17a0e0198a292f2b15503544640a6e10801bd4183328b51d0e97d9e37d0',
-        :url => 'ftp://rpmfind.net/linux/mageia/distrib/2/x86_64/media/core/updates/php-mysql-5.3.27-1.2.mga2.x86_64.rpm'  },
-        {:name => :php_curl,:checksum => 'f7fecd9cb7d8423e7db2f3117c2c4c053dd6f4db113376732285445c956f9b95',
-                :url => 'ftp://rpmfind.net/linux/mageia/distrib/2/i586/media/core/updates/php-curl-5.3.27-1.2.mga2.i586.rpm'  }
+{:name => 'php-common',:checksum => '5c67feed56e2ace07d3503950592faf886f2b6d0505dc983ecff459f7786aaa4',           :url => 'ftp://rpmfind.net/linux/centos/5.11/os/x86_64/CentOS/php-common-5.1.6-44.el5_10.x86_64.rpm'  },
+{:name => 'php-mysql',:checksum => 'fd3abf88bd8962ed3e3dd760fcec8679d80717a6916fb93d041ffba70a703161',        :url => 'ftp://rpmfind.net/linux/centos/5.11/os/x86_64/CentOS/php-mysql-5.1.6-44.el5_10.x86_64.rpm'  },
 ]
