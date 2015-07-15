@@ -77,6 +77,8 @@ unless File.exist?(db_installed_file)
     end
   end
 
+  include_recipe '::_symlink'
+
   file db_installed_file do
     owner 'root'
     group 'root'
