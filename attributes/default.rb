@@ -67,12 +67,14 @@ default[:magento][:database] = 'mysql'
 default[:magento][:db][:host] = 'localhost'
 default[:magento][:db][:database] = 'magento'
 default[:magento][:db][:username] = 'magentouser'
-set_unless[:magento][:db][:password] = secure_password
+default[:magento][:db][:password] = 'password'
 default[:magento][:db][:acl] = 'localhost'
 
 
 default[:magento][:nginx][:default_listen] = '127.0.0.1:9000'
+# ilikerandompasswords is default by mysql
 default[:mysql][:db][:root_password] = 'password'
+default[:mysql][:db][:server_root_password] = 'password'
 default[:magento][:fresh_install] = false
 default[:magento][:install_flag] = '/root/.magento.app.installed'
 default[:system][:timezone] = 'Australia/Adelaide'
@@ -83,7 +85,21 @@ default[:php][:version] = '5.4'
 default[:xdebug][:config_file] = '/etc/php5/fpm/conf.d/20-xdebug.ini'
 default[:xdebug][:web_server][:service_name] = 'nginx'
 default[:xdebug][:directives] = { "remote_autostart" => 1, "remote_connect_back" => 1, "remote_enable" => 1, "remote_log" => '/tmp/remote.log' }
-default[:magento][:url_package] = []
+
+case node['platform_family']
+when 'rhel', 'fedora'
+  if node['platform_version'].to_f < 6.5
+
+#      default[:magento][:url_package] = [
+#      {:name => 'mysql',:checksum => '53470b876bce1875cfd010851bb49aacb32156e80733a1723452401722830c33',           :url => 'http://dev.mysql.com/get/mysql-community-release-el5-5.noarch.rpm'  }
+#      ]
+     default[:magento][:url_package] = []
+ else
+    default[:magento][:url_package] = []
+ end
+end
+
+
 # curl ftp://rpmfind.net/linux/Mandriva/official/updates/2008.1/x86_64/media/main/updates/glibc-2.7-12.2mnb1.x86_64.rpm | shasum -a 256
 default[:magento][:url_package_5_3] = [
 {:name => 'php-common',:checksum => '5c67feed56e2ace07d3503950592faf886f2b6d0505dc983ecff459f7786aaa4',           :url => 'ftp://rpmfind.net/linux/centos/5.11/os/x86_64/CentOS/php-common-5.1.6-44.el5_10.x86_64.rpm'  },

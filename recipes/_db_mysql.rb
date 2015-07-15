@@ -11,6 +11,9 @@ unless File.exist?(db_installed_file)
   root_password = node[:mysql][:server_root_password]
   db_config = node[:magento][:db]
 
+  #Executs the sql generated via erb template later
+  #When template is created later, it calls execute via notifify
+  #Although this code is interpreted first, command inside is executed later via notification
   execute 'mysql-install-mage-privileges' do
     command <<-EOH
     /usr/bin/mysql -u root -p#{root_password} < \
@@ -19,6 +22,10 @@ unless File.exist?(db_installed_file)
     action :nothing
   end
 
+  #database initialization script such as creating magento script
+  #This script remains on the system so you can view it in hard coded /etc/mysql/mage-grants.sql
+  #You can debug it too using
+  # mysql -u root -p#{root_password} < /etc/mysql/mage-grants.sql
   template '/etc/mysql/mage-grants.sql' do
     path '/etc/mysql/mage-grants.sql'
     source 'grants.sql.erb'

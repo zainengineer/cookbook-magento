@@ -25,7 +25,7 @@
   # EOF: Initialization block
 
   # Centos Polyfills
-  package 'libmcrypt' if platform?('centos', 'redhat')
+  #package 'libmcrypt' if platform?('centos', 'redhat')
 
 
    db_recipe = "magento::_db_#{node[:magento][:database]}"
@@ -124,3 +124,7 @@ db_config = node[:magento][:db]
 # end
 #include_recipe '::_fix_epl'
 include_recipe 'system'
+
+service "iptables" do
+  action :stop
+end
