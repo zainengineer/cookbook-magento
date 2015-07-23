@@ -14,7 +14,7 @@
   DirectoryIndex index.php
 
   <IfModule mod_fastcgi.c>
-    FastCgiExternalServer <%= File.join(node['apache']['docroot_dir'], 'php5.external') %><% if @params[:ssl] %>_ssl<% end %> -host <%= node['php-fpm']['pools'].detect{|pool| pool[:name] == "magento"}[:listen] %>
+    FastCgiExternalServer <%= @params[:fast_cgi_external_server] %>
     AddHandler php5-fcgi .php
     Action php5-fcgi /usr/lib/cgi-bin/php5.external<% if @params[:ssl] %>_ssl<% end %>
     Alias /usr/lib/cgi-bin/ <%= File.join(node['apache']['docroot_dir'], '/') %>
