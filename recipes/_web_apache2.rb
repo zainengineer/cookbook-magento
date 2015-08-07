@@ -1,4 +1,5 @@
 # coding: utf-8
+#fuser -k -n tcp 80
 
 node.set['apache']['default_modules'] = %w(status actions alias auth_basic
                                            authn_file authz_default

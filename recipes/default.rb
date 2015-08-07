@@ -125,7 +125,4 @@ db_config = node[:magento][:db]
 # end
 #include_recipe '::_fix_epl'
 include_recipe 'system'
-
-service "iptables" do
-  action :stop
-end
+include_recipe '::_firewall'
