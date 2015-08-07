@@ -75,6 +75,7 @@ default[:magento][:nginx][:default_listen] = '127.0.0.1:9000'
 # ilikerandompasswords is default by mysql
 default[:mysql][:db][:root_password] = 'password'
 default[:mysql][:db][:server_root_password] = 'password'
+default[:mysql][:db][:allow_remote_root] = true
 default[:magento][:fresh_install] = false
 default[:magento][:install_flag] = '/root/.magento.app.installed'
 default[:system][:timezone] = 'Australia/Adelaide'

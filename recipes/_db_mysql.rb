@@ -6,6 +6,7 @@ unless File.exist?(db_installed_file)
 
   include_recipe 'mysql::server'
   include_recipe 'mysql::client'
+  include_recipe 'mysql_tuning::default'
   #include_recipe 'mysql-chef_gem'
 
   root_password = node[:mysql][:server_root_password]
