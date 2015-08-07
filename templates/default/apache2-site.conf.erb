@@ -10,6 +10,13 @@
 
   ServerName <%= node[:magento][:domain] %>
   <% if @params[:server_aliases] %>ServerAlias <%= @params[:server_aliases] %><% end %>
+  <% node[:magento][:run_codes].each do |domainLoop, codeLoop| %>
+           ServerAlias <%= "#{domainLoop}" %>
+    <% end %>
+  <% node[:magento][:server_params].each do |param_name, param_value| %>
+         SetEnv <%= "#{param_name}  #{param_value}" %>
+  <% end %>
+
   DocumentRoot <%= node[:magento][:dir] %>
   DirectoryIndex index.php
 

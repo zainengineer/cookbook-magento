@@ -26,6 +26,7 @@ cgiHost = ' -host ' + default_listen
 
 
 %w(default ssl).each do |site|
+  siteName = site;
   if site == 'ssl'
     cgissl =  '_ssl'
   else
@@ -33,7 +34,12 @@ cgiHost = ' -host ' + default_listen
   end
   FastCgiExternalServer = cgiDoc + cgissl + cgiHost
 
+  #web_app is apache recipie thing
+  # https://github.com/svanzoest-cookbooks/apache2#web_app
+
   web_app "#{site}" do
+    #name siteName
+    enable true
     template 'apache2-site.conf.erb'
     docroot node[:magento][:dir]
     server_name node[:magento][:domain]
@@ -45,7 +51,7 @@ cgiHost = ' -host ' + default_listen
   end
 end
 
-%w(default 000-default).each do |site|
+%w(000-default).each do |site|
   apache_site "#{site}" do
     enable false
   end
