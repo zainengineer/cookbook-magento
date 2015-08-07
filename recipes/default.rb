@@ -4,6 +4,7 @@
   #git is needed for some installations like n98 etc
   include_recipe '::_fix_epl'
   include_recipe '::_git'
+  include_recipe '::_epel_update'
 #   case node['platform_family']
 #   when 'rhel', 'fedora'
 #     include_recipe 'yum'
