@@ -1,6 +1,11 @@
 # coding: utf-8
 #fuser -k -n tcp 80
 
+#-k is parameter which kills the process
+execute 'kill-port-80' do
+    command "fuser -k -n tcp 80"
+    ignore_failure true
+end
 node.set['apache']['default_modules'] = %w(status actions alias auth_basic
                                            authn_file authz_default
                                            authz_groupfile authz_host
