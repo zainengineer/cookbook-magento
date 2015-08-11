@@ -36,6 +36,8 @@ default[:magento][:https_port] = 443
 default[:magento][:nginx][:send_timeout] = 60
 default[:magento][:nginx][:proxy_read_timeout] = 60
 
+default[:magento][:apache][:kill_port80] = false
+
 set['php-fpm']['pools'] = {
     "default" => {
         :enable => true

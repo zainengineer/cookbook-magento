@@ -1,10 +1,12 @@
 # coding: utf-8
 #fuser -k -n tcp 80
 
+#For some reason fastcgi module which is part of apache default modules was listening at port 80. Now not happening
 #-k is parameter which kills the process
 execute 'kill-port-80' do
     command "fuser -k -n tcp 80"
     ignore_failure true
+    only_if node[:magento][:apache][:kill_port80]
 end
 node.set['apache']['default_modules'] = %w(status actions alias auth_basic
                                            authn_file authz_default
