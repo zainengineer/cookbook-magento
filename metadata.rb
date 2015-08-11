@@ -1,0 +1,7 @@
+name             'Sample magento berkshelf'
+maintainer       'Zain'
+maintainer_email 'zain@aligent.com.au'
+license          'All rights reserved'
+description      'This is required to make berkshelf work'
+long_description 'This is required to make berkshelf work'
+version          '0.0.1'

@@ -1,6 +1,5 @@
 /.idea
 .vagrant
-Berksfile.lock
 *~
 *#
 .#*
