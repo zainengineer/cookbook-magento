@@ -1,6 +1,21 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+#Allow local overrides to change ip
+defaultConfig = {
+    memory: 2048,
+    ip:  '192.168.38.56',
+    sync_method: :share
+}
+vagrantConfig = defaultConfig
+if (Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('1.9') )
+    if File.exists?('vagrant.local.yaml')
+        require 'yaml'
+        localConfig = YAML.load_file('vagrant.local.yaml')
+        vagrantConfig = defaultConfig.merge!(localConfig)
+    end
+end
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -15,7 +30,7 @@ Vagrant.configure(2) do |config|
   config.vm.box = "centos6.4"
 
   config.vm.provider "virtualbox" do |v|
-    v.customize ["modifyvm", :id, "--memory", 2048]
+    v.customize ["modifyvm", :id, "--memory", vagrantConfig[:memory]]
     v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
     v.customize ["modifyvm", :id, "--vram", "50"]
   end
@@ -37,7 +52,7 @@ Vagrant.configure(2) do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network "private_network", ip: "192.168.38.56"
+  config.vm.network "private_network", ip: vagrantConfig[:ip]
   #config.vm.network "private_network", ip: "192.168.40.10"
 
   # Create a public network, which generally matched to bridged network.
@@ -49,7 +64,18 @@ Vagrant.configure(2) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder ".", "/var/www/magento", :mount_options => ["dmode=777","fmode=777"]
+  if vagrantConfig[:sync_method].to_sym == :rsync
+    config.vm.synced_folder ".", "/var/www/magento",
+          type: "rsync",
+          create: "true" ,
+          rsync__auto: true,
+          rsync__exclude: "sql_dumps",
+          rsync__chown: false,
+          rsync__args: ["--verbose", "--archive", "--delete", "-z"]
+  else
+    config.vm.synced_folder ".", "/var/www/magento", :mount_options => ["dmode=777","fmode=777"]
+  end
+
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.

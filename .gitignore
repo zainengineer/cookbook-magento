@@ -1,5 +1,7 @@
 /.idea
-.vagrant
+/.vagrant
+/vagrant.local.yaml
+
 *~
 *#
 .#*
