@@ -86,8 +86,8 @@ Vagrant.configure(2) do |config|
             },
             :magento => {
                 :run_codes => {
-                    'vagrant.raw.com' => 'rawsons',
-                    'vagrant.asd.com' => 'base'
+                    'vagrant.one-website.com' => 'base',
+                    'vagrant.second-website.com' => 'second'
                 },
                 :run_type => 'website',
                 :webserver => 'apache2',
