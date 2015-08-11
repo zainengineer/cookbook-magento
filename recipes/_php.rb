@@ -92,5 +92,5 @@ include_recipe '::_url_package'
 
 include_recipe 'magerun'
 include_recipe 'composer'
-#include_recipe 'xdebug'
+include_recipe '::_xdebug'
 include_recipe '::_magento_packages'

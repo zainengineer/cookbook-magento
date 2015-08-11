@@ -19,14 +19,28 @@ default[:magento][:user] = 'magento'
 # Required packages
 case node['platform_family']
 when 'rhel', 'fedora'
+  default[:xdebug][:config_file] = '/etc/php.d/xdebug.ini'
+  default[:php][:ext_conf_dir] = '/etc/php.d/'
   if node['platform_version'].to_f < 5.2
     default[:magento][:packages] = %w(php-cli php-common php-curl php-gd php-mcrypt php-mysql php-pear php-xml)
     default['php']['packages'] = []
   else
     default[:magento][:packages] = %w(php-cli php-common php-curl php-gd php-mcrypt php-mysql php-pear php-apc php-xml)
   end
+  if node['platform_version'].to_f < 6.5
+
+  #      default[:magento][:url_package] = [
+  #      {:name => 'mysql',:checksum => '53470b876bce1875cfd010851bb49aacb32156e80733a1723452401722830c33',           :url => 'http://dev.mysql.com/get/mysql-community-release-el5-5.noarch.rpm'  }
+  #      ]
+     default[:magento][:url_package] = []
+  else
+    default[:magento][:url_package] = []
+  end
 else
   default[:magento][:packages] = %w(php5-cli php5-common php5-curl php5-gd php5-mcrypt php5-mysql php-pear php-apc)
+
+  default[:xdebug][:config_file] = '/etc/php5/fpm/conf.d/20-xdebug.ini'
+  default[:php][:ext_conf_dir] = '/etc/php5/fpm/conf.d'
 end
 
 # Web Server
@@ -80,27 +94,15 @@ default[:mysql][:db][:server_root_password] = 'password'
 default[:mysql][:db][:allow_remote_root] = true
 default[:magento][:fresh_install] = false
 default[:magento][:install_flag] = '/root/.magento.app.installed'
+default[:magento][:remote_host] ='127.0.0.1';
 default[:system][:timezone] = 'Australia/Adelaide'
 
-default[:php][:ext_conf_dir] = '/etc/php5/fpm/conf.d'
+
 default[:php][:version] = '5.4'
 
-default[:xdebug][:config_file] = '/etc/php5/fpm/conf.d/20-xdebug.ini'
-default[:xdebug][:web_server][:service_name] = 'nginx'
-default[:xdebug][:directives] = { "remote_autostart" => 1, "remote_connect_back" => 1, "remote_enable" => 1, "remote_log" => '/tmp/remote.log' }
-
-case node['platform_family']
-when 'rhel', 'fedora'
-  if node['platform_version'].to_f < 6.5
-
-#      default[:magento][:url_package] = [
-#      {:name => 'mysql',:checksum => '53470b876bce1875cfd010851bb49aacb32156e80733a1723452401722830c33',           :url => 'http://dev.mysql.com/get/mysql-community-release-el5-5.noarch.rpm'  }
-#      ]
-     default[:magento][:url_package] = []
- else
-    default[:magento][:url_package] = []
- end
-end
+#default[:xdebug][:config_file] = '/etc/php5/fpm/conf.d/20-xdebug.ini'
+default[:xdebug][:web_server][:service_name] = default[:magento][:webserver]
+default[:xdebug][:directives] = { "remote_autostart" => 1, "remote_connect_back" => 1, "remote_enable" => 1, "remote_log" => '/tmp/remote.log', "remost_host" => default[:magento][:remote_host]}
 
 
 # curl ftp://rpmfind.net/linux/Mandriva/official/updates/2008.1/x86_64/media/main/updates/glibc-2.7-12.2mnb1.x86_64.rpm | shasum -a 256
