@@ -1,7 +1,32 @@
 #include_recipe 'xdebug'
 
-#should work in attributes but not sure how to make it work
-node.set[:xdebug]['directives'][:remote_host]  = node[:magento][:remote_host]
+clientIP = node[:network][:interfaces][:eth1][:addresses].detect{|k,v| v[:family] == "inet" }.first
+networkIP = clientIP.split('.')
+ipParts = clientIP.split('.')
+ipParts[3] = 1;
+networkIP = ipParts.join('.')
+directives = node[:xdebug]['directives'].to_hash
+directives[:remote_host]  = networkIP
+if directives[:remote_host.to_s]
+    puts "inside if of delete"
+    directives.delete(:remote_host.to_s)
+end if
+directives.delete(:remote_host.to_s)
+node.set[:xdebug]['directives'] = directives
+
+
+if platform?(%w{debian ubuntu})
+  package "php5-xdebug"
+elsif platform?(%w{centos redhat fedora amazon scientific})
+  #assuming php 5.3
+  if node['platform_version'].to_f < 6.5
+    package "php-pecl-xdebug"
+  else
+    php_pear "xdebug" do
+        action :install
+      end
+  end
+end
 
 template node['xdebug']['config_file'] do
   source 'xdebug.ini.erb'

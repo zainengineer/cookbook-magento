@@ -1,5 +1,4 @@
 # coding: utf-8
-# coding: utf-8
   # BOF: Initialization block
   #git is needed for some installations like n98 etc
   include_recipe '::_fix_epl'

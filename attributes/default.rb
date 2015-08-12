@@ -102,7 +102,7 @@ default[:php][:version] = '5.4'
 
 #default[:xdebug][:config_file] = '/etc/php5/fpm/conf.d/20-xdebug.ini'
 default[:xdebug][:web_server][:service_name] = default[:magento][:webserver]
-default[:xdebug][:directives] = { "remote_autostart" => 1, "remote_connect_back" => 1, "remote_enable" => 1, "remote_log" => '/tmp/remote.log', "remost_host" => default[:magento][:remote_host]}
+default[:xdebug][:directives] = { "remote_autostart" => 1, "remote_connect_back" => 1, "remote_enable" => 1, "remote_log" => '/tmp/remote.log'}
 
 
 # curl ftp://rpmfind.net/linux/Mandriva/official/updates/2008.1/x86_64/media/main/updates/glibc-2.7-12.2mnb1.x86_64.rpm | shasum -a 256
