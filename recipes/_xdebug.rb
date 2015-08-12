@@ -34,9 +34,10 @@ template node['xdebug']['config_file'] do
   group 'root'
   mode 0644
   cookbook "xdebug"
-  unless node['xdebug']['web_server']['service_name'].empty?
-    notifies :restart, resources("service[#{node['xdebug']['web_server']['service_name']}]"), :delayed
-  end
+  #notifies is triggerring error so ignoring
+#   unless node['xdebug']['web_server']['service_name'].empty?
+#     notifies :restart, resources("service[#{node['xdebug']['web_server']['service_name']}]"), :delayed
+#   end
 end
 
 directives = node['xdebug']['directives']

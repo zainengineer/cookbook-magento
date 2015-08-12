@@ -94,3 +94,10 @@ include_recipe 'magerun'
 include_recipe 'composer'
 include_recipe '::_xdebug'
 include_recipe '::_magento_packages'
+include_recipe '::_ioncube'
+
+service "php-fpm" do
+  service_name('php5-fpm') if platform_family?('debian')
+  action :restart
+  provider(Chef::Provider::Service::Upstart)if (platform?('ubuntu') && node['platform_version'].to_f >= 14.04)
+end
