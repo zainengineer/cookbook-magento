@@ -5,7 +5,7 @@ maintainer_email 'craftsman@yevgenko.me'
 license 'Apache 2.0'
 description 'Magento app stack'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.8.11'
+version '0.8.12'
 recipe 'magento', 'Prepares app stack for magento deployments'
 
 %w(debian ubuntu centos redhat fedora amazon).each do |os|
@@ -29,4 +29,4 @@ depends 'composer', '~> 2.1.0'
 depends 'xdebug', '~> 1.0.0'
 depends 'firewall', '~> 1.6.1'
 depends 'mysql_tuning', '= 0.2.0'
-depends 'php-ioncube', '= 0.2.0'
+depends 'php-ioncube', '~> 0.2.0'
