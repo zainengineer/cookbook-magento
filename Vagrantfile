@@ -27,7 +27,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "centos6.4"
+  config.vm.box = "ubuntu/trusty64"
 
   config.vm.provider "virtualbox" do |v|
     v.customize ["modifyvm", :id, "--memory", vagrantConfig[:memory]]
@@ -38,7 +38,7 @@ Vagrant.configure(2) do |config|
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210.box"
+  #config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210.box"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -65,7 +65,7 @@ Vagrant.configure(2) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   if vagrantConfig[:sync_method].to_sym == :rsync
-    config.vm.synced_folder ".", "/var/www/magento",
+    config.vm.synced_folder ".", "/var/www/cp",
           type: "rsync",
           create: "true" ,
           rsync__auto: true,
@@ -73,7 +73,7 @@ Vagrant.configure(2) do |config|
           rsync__chown: false,
           rsync__args: ["--verbose", "--archive", "--delete", "-z"]
   else
-    config.vm.synced_folder ".", "/var/www/magento", :mount_options => ["dmode=777","fmode=777"]
+    config.vm.synced_folder ".", "/var/www/cp", :mount_options => ["dmode=777","fmode=777"]
   end
 
 
@@ -99,12 +99,13 @@ Vagrant.configure(2) do |config|
   #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
   # end
   config.berkshelf.enabled = true
+  config.omnibus.chef_version = :latest
 
   config.vm.provision "chef_solo" do |chef|
     #just adding the recipie in berkshelf file is not enough.
     #It will simply install nginx recipie in host(your) home directory
     #including it will actually execute it
-   chef.add_recipe "magento"
+   #chef.add_recipe "magento"
 
     chef.json = {
             :php => {
