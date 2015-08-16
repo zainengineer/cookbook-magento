@@ -5,6 +5,7 @@
 defaultConfig = {
     memory: 2048,
     ip:  '192.168.38.56',
+    sync_folder:  '/var/www/cp',
     sync_method: :share
 }
 vagrantConfig = defaultConfig
@@ -16,6 +17,10 @@ if (Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('1.9') )
     end
 end
 
+runCodes = {
+    'vagrant.one-website.com' => 'base',
+    'vagrant.second-website.com' => 'second'
+}
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -28,6 +33,15 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "ubuntu/trusty64"
+
+
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
+  config.hostmanager.include_offline = true
+
+  config.vm.hostname = 'example-box-hostname'
+  config.vm.network :private_network, ip: vagrantConfig[:ip]
+  config.hostmanager.aliases = runCodes.keys
 
   config.vm.provider "virtualbox" do |v|
     v.customize ["modifyvm", :id, "--memory", vagrantConfig[:memory]]
@@ -65,7 +79,7 @@ Vagrant.configure(2) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   if vagrantConfig[:sync_method].to_sym == :rsync
-    config.vm.synced_folder ".", "/var/www/cp",
+    config.vm.synced_folder ".", vagrantConfig[:sync_folder],
           type: "rsync",
           create: "true" ,
           rsync__auto: true,
@@ -73,7 +87,7 @@ Vagrant.configure(2) do |config|
           rsync__chown: false,
           rsync__args: ["--verbose", "--archive", "--delete", "-z"]
   else
-    config.vm.synced_folder ".", "/var/www/cp", :mount_options => ["dmode=777","fmode=777"]
+    config.vm.synced_folder ".", vagrantConfig[:sync_folder], :mount_options => ["dmode=777","fmode=777"]
   end
 
 
@@ -105,17 +119,15 @@ Vagrant.configure(2) do |config|
     #just adding the recipie in berkshelf file is not enough.
     #It will simply install nginx recipie in host(your) home directory
     #including it will actually execute it
-   #chef.add_recipe "magento"
+   chef.add_recipe "project_cp"
 
     chef.json = {
             :php => {
 #                 :version => "5.3"
             },
             :magento => {
-                :run_codes => {
-                    'vagrant.one-website.com' => 'base',
-                    'vagrant.second-website.com' => 'second'
-                },
+                :run_codes => runCodes,
+                :dir => vagrantConfig[:sync_folder],
                 :run_type => 'website',
                 :webserver => 'apache2',
                 :server_params => {
