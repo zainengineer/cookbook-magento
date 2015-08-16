@@ -1,12 +1,10 @@
-<%- if @params[:ssl] %>
-<VirtualHost *:<%= node[:magento][:https_port] %>>
-
+#Now virtual Host
+<VirtualHost *:<%= @params[:web_port] %>>
+<% if @params[:ssl] %>
   SSLEngine on
   SSLCertificateFile <%= @params[:ssl_cert] %>
   SSLCertificateKeyFile <%= @params[:ssl_key] %>
-<%- else %>
-<VirtualHost *:<%= node[:magento][:http_port] %>>
-<%- end %>
+<% end %>
 
   ServerName <%= node[:magento][:domain] %>
   <% if @params[:server_aliases] %>ServerAlias <%= @params[:server_aliases] %><% end %>
@@ -33,6 +31,7 @@
   <Directory <%= node[:magento][:dir] %>/>
     Options +FollowSymLinks
     AllowOverride All
+    Require all granted
     <%- if @params[:ssl] %>SSLRequire %{SSL_CIPHER_USEKEYSIZE} >= 128<%- end %>
     <IfModule mod_deflate.c>
       SetOutputFilter DEFLATE

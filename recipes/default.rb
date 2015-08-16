@@ -1,7 +1,15 @@
 # coding: utf-8
   # BOF: Initialization block
+
+#This will add more sources in default repository for ubuntu
+include_recipe '::_ubuntu'
+#adding this recipie will automatically do
+# apt-get update
+
+include_recipe 'apt'
+
   #git is needed for some installations like n98 etc
-  include_recipe '::_fix_epl'
+include_recipe '::_fix_epl'
   include_recipe '::_git'
   include_recipe '::_epel_update'
 #   case node['platform_family']
@@ -28,12 +36,12 @@
   #package 'libmcrypt' if platform?('centos', 'redhat')
 
 
-   db_recipe = "magento::_db_#{node[:magento][:database]}"
+   db_recipe = "::_db_#{node[:magento][:database]}"
    Chef::Log.info "adding database recipe: "  + db_recipe
    include_recipe db_recipe
 
 
-web_recipe = "magento::_web_#{node[:magento][:webserver]}"
+web_recipe = "::_web_#{node[:magento][:webserver]}"
 # Chef::Log.info "adding web recipe: " + web_recipe
 include_recipe web_recipe
   include_recipe '::_php'
@@ -125,3 +133,4 @@ db_config = node[:magento][:db]
 #include_recipe '::_fix_epl'
 include_recipe 'system'
 include_recipe '::_firewall'
+include_recipe "nodejs"

@@ -59,38 +59,8 @@ include_recipe 'php'
 include_recipe '::_url_package'
 
   # Install php-fpm package
-   include_recipe '::_php_fpm'
+include_recipe '::_php_fpm'
 
-   # Ubuntu Polyfills
-     if platform?('ubuntu', 'debian')
-       bash 'Tweak CLI php.ini file' do
-         cwd '/etc/php5/cli'
-         code <<-EOH
-         sed -i 's/memory_limit = .*/memory_limit = 128M/' php.ini
-         sed -i 's/;realpath_cache_size = .*/realpath_cache_size = 32K/' php.ini
-         sed -i 's/;realpath_cache_ttl = .*/realpath_cache_ttl = 7200/' php.ini
-         EOH
-       end
-     end
-
-     bash 'Tweak apc.ini file' do
-       cwd php_conf[1] # module ini files
-       code <<-EOH
-       grep -q -e 'apc.stat=0' apc.ini || echo "apc.stat=0" >> apc.ini
-       EOH
-     end
-
-     bash 'Tweak FPM php.ini file' do
-       cwd php_conf[0] # php.ini location
-       code <<-EOH
-       sed -i 's/memory_limit = .*/memory_limit = 128M/' php.ini
-       sed -i 's/;realpath_cache_size = .*/realpath_cache_size = 32K/' php.ini
-       sed -i 's/;realpath_cache_ttl = .*/realpath_cache_ttl = 7200/' php.ini
-       EOH
-       #notifies :restart, resources(service: 'php-fpm')
-     end
-
-include_recipe 'magerun'
 include_recipe 'composer'
 include_recipe '::_xdebug'
 include_recipe '::_magento_packages'

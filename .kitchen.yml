@@ -18,7 +18,7 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[magento::default]
+      - recipe[project_cp::default]
     attributes:
       mysql:
         server_debian_password: test
@@ -29,7 +29,7 @@ suites:
           password: magento
   - name: apache
     run_list:
-      - recipe[magento::default]
+      - recipe[project_cp::default]
     attributes:
       mysql:
         server_debian_password: test

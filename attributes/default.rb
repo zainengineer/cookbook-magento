@@ -39,8 +39,9 @@ when 'rhel', 'fedora'
 else
   default[:magento][:packages] = %w(php5-cli php5-common php5-curl php5-gd php5-mcrypt php5-mysql php-pear php-apc)
 
-  default[:xdebug][:config_file] = '/etc/php5/fpm/conf.d/20-xdebug.ini'
+  default[:xdebug][:config_file] = '/etc/php5/cgi/conf.d/20-xdebug.ini'
   default[:php][:ext_conf_dir] = '/etc/php5/fpm/conf.d'
+  default[:magento][:url_package] = []
 end
 
 # Web Server
@@ -51,6 +52,13 @@ default[:magento][:nginx][:send_timeout] = 60
 default[:magento][:nginx][:proxy_read_timeout] = 60
 
 default[:magento][:apache][:kill_port80] = false
+default[:ubuntu][:components] = 'main restricted universe multiverse'
+# default['ubuntu']['component_list'] = {
+#     main: 'main restricted',
+#     universe: 'universe',
+#     universe: 'universe',
+#     universe: 'multiverse'
+# }
 
 set['php-fpm']['pools'] = {
     "default" => {
@@ -90,18 +98,17 @@ default[:magento][:db][:acl] = 'localhost'
 default[:magento][:nginx][:default_listen] = '127.0.0.1:9000'
 # ilikerandompasswords is default by mysql
 default[:mysql][:db][:root_password] = 'password'
-default[:mysql][:db][:server_root_password] = 'password'
+default[:mysql][:server_root_password] = 'password'
 default[:mysql][:db][:allow_remote_root] = true
 default[:magento][:fresh_install] = false
 default[:magento][:install_flag] = '/root/.magento.app.installed'
 default[:magento][:remote_host] ='127.0.0.1'
-default[:magento][:ioncube] = true
+default[:magento][:ioncube] = false
 default[:system][:timezone] = 'Australia/Adelaide'
 
 
 default[:php][:version] = '5.4'
 
-#default[:xdebug][:config_file] = '/etc/php5/fpm/conf.d/20-xdebug.ini'
 default[:xdebug][:web_server][:service_name] = default[:magento][:webserver]
 default[:xdebug][:directives] = { remote_enable:  1}
 

@@ -3,11 +3,11 @@
 
 #For some reason fastcgi module which is part of apache default modules was listening at port 80. Now not happening
 #-k is parameter which kills the process
-execute 'kill-port-80' do
-    command "fuser -k -n tcp 80"
-    ignore_failure true
-    only_if node[:magento][:apache][:kill_port80]
-end
+# execute 'kill-port-80' do
+#     command "fuser -k -n tcp 80"
+#     ignore_failure true
+#     only_if node[:magento][:apache][:kill_port80]
+# end
 node.set['apache']['default_modules'] = %w(status actions alias auth_basic
                                            authn_file authz_default
                                            authz_groupfile authz_host
@@ -34,11 +34,13 @@ cgiHost = ' -host ' + default_listen
 
 
 %w(default ssl).each do |site|
-  siteName = site;
+  siteName = site
   if site == 'ssl'
     cgissl =  '_ssl'
+    port = node[:magento][:https_port]
   else
     cgissl = ''
+    port = node[:magento][:http_port]
   end
   FastCgiExternalServer = cgiDoc + cgissl + cgiHost
 
@@ -56,6 +58,7 @@ cgiHost = ' -host ' + default_listen
     ssl_cert File.join(node[:apache][:dir], 'ssl', node[:magento][:cert_name])
     ssl_key File.join(node[:apache][:dir], 'ssl', node[:magento][:cert_name])
     fast_cgi_external_server FastCgiExternalServer
+    web_port port
   end
 end
 
