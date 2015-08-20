@@ -65,7 +65,7 @@ include_recipe 'composer'
 include_recipe '::_xdebug'
 include_recipe '::_magento_packages'
 include_recipe '::_ioncube'
-
+include_recipe '::_mem_cache'
 service "php-fpm" do
   service_name('php5-fpm') if platform_family?('debian')
   action :restart

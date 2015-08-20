@@ -104,6 +104,7 @@ default[:magento][:fresh_install] = false
 default[:magento][:install_flag] = '/root/.magento.app.installed'
 default[:magento][:remote_host] ='127.0.0.1'
 default[:magento][:ioncube] = false
+default[:magento][:mem_cache] = true
 default[:system][:timezone] = 'Australia/Adelaide'
 
 
