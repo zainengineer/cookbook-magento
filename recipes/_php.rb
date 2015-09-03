@@ -90,8 +90,7 @@ include_recipe '::_url_package'
        #notifies :restart, resources(service: 'php-fpm')
      end
 
-include_recipe 'magerun'
-include_recipe '::_pipe_viewer'
+include_recipe '::_magerun'
 
 include_recipe 'composer'
 include_recipe '::_xdebug'
