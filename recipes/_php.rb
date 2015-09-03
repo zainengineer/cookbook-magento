@@ -91,6 +91,8 @@ include_recipe '::_url_package'
      end
 
 include_recipe 'magerun'
+include_recipe '::_pipe_viewer'
+
 include_recipe 'composer'
 include_recipe '::_xdebug'
 include_recipe '::_magento_packages'
