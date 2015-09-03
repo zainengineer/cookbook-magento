@@ -1,7 +1,10 @@
 include_recipe 'magerun'
 include_recipe '::_pipe_viewer'
 
+# link to create
 targetFile = '/usr/local/bin/n98-magerun.phar'
+
+#file that already exists
 linkTo =  'n98-magerun';
 
 link linkTo do
