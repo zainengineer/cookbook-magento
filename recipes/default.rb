@@ -125,3 +125,4 @@ db_config = node[:magento][:db]
 #include_recipe '::_fix_epl'
 include_recipe 'system'
 include_recipe '::_firewall'
+include_recipe '::_redis'
